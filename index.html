@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module" src="components/hello-component.js"></script>
+    <script type="module" src="components/pokemon-list.js"></script>
+    <script type="module">
+        document.getElementById('frmChangeName').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('hello').setAttribute('name', document.getElementById('txtName').value);
+        });
+    </script>
+</head>
+<body>
+    <hello-component id="hello" name="World"></hello-component>
+    <form id="frmChangeName">
+        <input type="text" id="txtName" value="World" />
+        <input type="submit" value="Change Name">
+    </form>
+    <pokemon-list></pokemon-list>
+</body>
+</html>
