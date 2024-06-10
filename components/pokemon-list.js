@@ -12,15 +12,6 @@ class PokemonList extends HTMLElement {
     pokemon;
 
     /**
-     * The attributes to observe.
-     * 
-     * @returns {string[]}
-     */
-    static get observedAttributes() {
-        return [];
-    }
-
-    /**
      * Constructor.
      */
     constructor() {
@@ -33,67 +24,88 @@ class PokemonList extends HTMLElement {
      */
     connectedCallback() {
         this.render();
-        this.getPokemon();
-    }
-
-    /**
-     * Called when an attribute changes.
-     * 
-     * @param {string} name The name of the attribute.
-     * @param {string} oldValue The old value of the attribute.
-     * @param {string} newValue The new value of the attribute.
-     */
-    attributeChangedCallback(name, oldValue, newValue) {
-        if (oldValue === newValue) {
-            return;
-        }
-        switch (name) {
-        }
+        this.load();
     }
 
     /**
      * Renders the element.
      */ 
     render() {
-        if (!this.pokemon) {
-            this.shadowRoot.innerHTML = /*html*/`
-                <span>Loading...</span>
-                <progress></progress>
-            `;
-        } else {
-            this.shadowRoot.innerHTML = /*html*/`
-                <style>
-                    ul {
+        this.shadowRoot.innerHTML = /*html*/`
+            <style>
+                #container {
+                    height: 500px;
+                    overflow-y: auto;
+                    border: 1px solid #ccc;
+
+                    #loading {
+                        margin: auto;
+                        margin-top: 250px;
+                        text-align: center;
+                    }   
+
+                    #list {
                         list-style-type: none;
+                        opacity: 0;
                         padding: 0;
+                        margin: 0;
+                        width: calc(100% - 32px);
+
+                        li {
+                            border: 1px solid #ccc;
+                            margin: 5px;
+                            padding: 10px;
+                            width: 100%;
+                            
+                            &:nth-child(even) {
+                                background-color: #eee;
+                            }
+                        }
+
+                        &.loaded {
+                            transition: all 1s ease-in-out;
+                            opacity: 1;
+                        }
                     }
-                    li {
-                        border: 1px solid #ccc;
-                        margin: 5px;
-                        padding: 10px;
-                    }
-                </style>
-                <ul>
-                    ${this.pokemon.map(pokemon => /*html*/`
-                        <li>${pokemon.name}</li>
-                    `).join('')}
+
+                }
+            </style>
+            <div id="container">
+                <div id="loading">
+                    <span>Loading...</span>
+                    <progress></progress>
+                </div>
+                <ul id="list">
                 </ul>
-                
-            `;
-        }
+            </div>`;
     }
 
     /**
      * Gets the Pokemon.
      */
-    async getPokemon() {
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10');
+    async load() {
+        const list = this.shadowRoot.getElementById('list');
+        list.innerHTML = '';
+
+        this.pokemon = null;
+        this.shadowRoot.getElementById('loading').style.display = 'block';
+        this.shadowRoot.getElementById('list').classList.remove('loaded');
+
+        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=50');
         const data = await response.json();
         this.pokemon = data.results;
 
-        /* sleep for 2 seconds to simulate slow load */
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        this.render();
+
+        /* sleep to simulate slow load */
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        this.shadowRoot.getElementById('loading').style.display = 'none';
+        this.pokemon.forEach(pokemon => {
+            const li = document.createElement('li');
+            li.innerText = pokemon.name;
+            list.appendChild(li);
+        });
+        list.classList.add('loaded');
     }
 }
 

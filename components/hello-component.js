@@ -42,8 +42,13 @@ class HelloComponent extends HTMLElement {
         switch (name) {
             case 'name':
                 const nameElement = this.shadowRoot.getElementById('name');
+                nameElement.classList.remove('loaded');
+
                 if (nameElement) {
-                    nameElement.innerText = newValue;
+                    setTimeout(() => {
+                        nameElement.innerText = newValue;
+                        nameElement.classList.add('loaded');
+                    }, 500);
                 }
                 break;
         }
@@ -56,10 +61,19 @@ class HelloComponent extends HTMLElement {
         this.shadowRoot.innerHTML = /*html*/`
             <style>
                 h1 {
-                    color: red;
+                    color: var(--hello-component-color, red);
+
+                    #name {
+                        opacity: 0;
+                        transition: opacity 0.25s;
+
+                        &.loaded {
+                            opacity: 1;
+                        }
+                    }
                 }
             </style>
-            <h1>Hello, <span id="name">${this.getAttribute('name')}</span></h1>
+            <h1>Hello, <span id="name" class="loaded">${this.getAttribute('name')}</span></h1>
         `;
     }
 } 
