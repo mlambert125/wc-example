@@ -21,45 +21,7 @@
             document.querySelector('pokemon-list').load();
         });
     </script>
-    <style>
-        :root {
-            --hello-component-color: darkblue;
-
-            body {
-                font-family: Arial, sans-serif;
-                display: grid;
-                grid-template-rows: auto 1fr auto;
-                height: calc(100vh - 16px);
-
-                button, input[type="submit"] {
-                    cursor: pointer;
-                } 
-
-                header {
-                    text-align: center;
-                    padding: 1em;
-                }
-
-                main {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 1em;
-                    margin-inline: 1em;
-                    
-                    section {
-                        padding: 1em;
-                        border: 1px solid #ccc;
-                        border-radius: 5px;
-                    }
-                }   
-                
-                footer {
-                    text-align: center;
-                    padding: 1em;
-                }
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="site.css">
 </head>
 <body>
     <header>

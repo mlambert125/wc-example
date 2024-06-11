@@ -37,12 +37,13 @@ class PokemonList extends HTMLElement {
                     height: 500px;
                     overflow-y: auto;
                     border: 1px solid #ccc;
+                    box-shadow: 15px 15px 10px #ccc;
 
                     #loading {
                         margin: auto;
                         margin-top: 250px;
                         text-align: center;
-                    }   
+                    }
 
                     #list {
                         list-style-type: none;

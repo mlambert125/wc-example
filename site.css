@@ -1,0 +1,54 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --light-gray: #ccc; 
+    --hello-component-color: darkblue;
+    --small-radius: 5px;
+
+    body {
+        margin: 0;
+        padding: 10px;
+        font-family: Arial, sans-serif;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        height: 100vh;
+
+        header {
+            h1 {
+                margin: 0;
+                font-size: 5em;
+                color: #003;
+                text-shadow: 5px 5px 5px #05a;
+            }
+        }
+
+        button, input[type="submit"] {
+            cursor: pointer;
+        } 
+
+        header {
+            text-align: center;
+            padding: 1em;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1em;
+            margin-inline: 1em;
+            
+            section {
+                padding: 1em;
+                border: 1px solid var(--light-gray);
+                border-radius: var(--small-radius);
+            }
+        }   
+        
+        footer {
+            text-align: center;
+            padding: 1em;
+        }
+    }
+}
