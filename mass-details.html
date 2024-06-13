@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 8px;
+            font-family: Arial, sans-serif;
+        }
+        section { 
+            width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            height: calc(100vh - 32px);
+            overflow: auto;
+        }
+    </style>
+    <button id="load-documents">Load Documents</button>
+    <button id="open-4500">Scroll to 4500 and expand it, centering item #25</button>
+    <section>    
+
+    </section>
+
+    <script type="module">
+        const loadDocumentsButton = document.getElementById('load-documents');
+        const open4500Button = document.getElementById('open-4500');
+        const section = document.querySelector('section');
+
+        loadDocumentsButton.addEventListener('click', () => {
+            for (let i = 0; i < 5000; i++) {
+                const details = document.createElement('details');
+                details.setAttribute('data-id', i);
+                const summary = document.createElement('summary');
+                summary.textContent = `Document #${i}`;
+
+                const ul = document.createElement('ul');
+                
+                for (let j = 0; j < 50; j++) {
+                    const li = document.createElement('li');
+                    li.textContent = `Item #${j}`;
+                    li.setAttribute('data-id', i + ':' + j);
+                    ul.appendChild(li);
+                }
+
+                details.appendChild(summary);
+                details.appendChild(ul);
+
+                section.appendChild(details);
+            }
+        });
+
+        open4500Button.addEventListener('click', () => {
+            const details = section.querySelector('details[data-id="4500"]');
+            details.open = true;
+
+            const li = details.querySelector('li[data-id="4500:25"]');
+
+            li.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+    </script>
+</body>
+</html>

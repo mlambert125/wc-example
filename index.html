@@ -8,44 +8,166 @@
     <link rel="icon" href="data:;base64,=">
     <script type="module" src="components/hello-component.js"></script>
     <script type="module" src="components/pokemon-list.js"></script>
-    <script type="module">
-        document.getElementById('frmChangeName').addEventListener('submit', function(e) {
-            e.preventDefault();
-            document.querySelector('hello-component').setAttribute(
-                'name', 
-                document.getElementById('txtName').value
-            );
-        });
-
-        document.getElementById('btnReload').addEventListener('click', function() {
-            document.querySelector('pokemon-list').load();
-        });
-    </script>
     <link rel="stylesheet" href="site.css">
 </head>
 <body>
-    <header>
-        <h1>Web Components</h1>
+    <style>
+        body {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto 1fr auto;
+            grid-template-areas:
+                "header"
+                "main"
+                "footer";
+        }
+    </style>
+    <header style="grid-area: header;">
+        <style>
+            body header {
+                text-align: center;
+                padding: var(--medium-padding);
+            }
+        </style>
+        <h1>
+            <style>
+                body header h1 h1 {
+                    margin: 0;
+                    font-size: 5em;
+                    color: var(--page-header-color);
+                    text-shadow: 5px 5px 5px var(--page-header-shadow);
+                }
+            </style>
+            Web Components
+        </h1>
         <hr>
     </header>
-    <main>
-        <section>
+    <main style="grid-area: main">
+        <style>
+            body main {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 1fr;
+                grid-template-areas:
+                    "left right";
+                gap: 1em;
+                margin-inline: 1em;
+                
+                section {
+                    padding: var(--medium-padding);
+                    border: 1px solid var(--section-border);
+                    border-radius: var(--small-radius);
+                }
+            }
+        </style>
+        <section style="grid-area: left">
             <hello-component name="World"></hello-component>
             <form id="frmChangeName">
-                <label for="txtName">Change Name:</label>
-                <input type="text" id="txtName" value="World">
+                <style>
+                    #frmChangeName {
+                        display: flex;
+                        gap: 1em;
+                        margin-top: 1em;
+                    }
+                </style>
+                <label>
+                    <style>
+                        #frmChangeName label {
+                            flex-grow: 1;
+                            display: flex;
+                            gap: 0.5em;
+                        }
+                    </style>
+                    Change Name:
+                    <input type="text" id="txtName" value="World">
+                    <style>
+                        #frmChangeName input[type="text"] {
+                            flex-grow: 1;
+                        }
+                    </style>
+                </label>
                 <input type="submit" value="Change Name">
+                <script type="module">
+                    document.getElementById('frmChangeName').addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        document.querySelector('hello-component').setAttribute(
+                            'name', 
+                            document.getElementById('txtName').value
+                        );
+                    });
+                </script>
             </form>
+
+            <div id="showDate">
+                <style>
+                    #showDate {
+                        font-size: 1.5em;
+                        margin-top: 1em;
+                        height: 1.5em;
+                        opacity: 0;
+                        scale: 0.1;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: fit-content;
+                        rotate: 360deg;
+
+                        &.loaded {
+                            opacity: 1;
+                            scale: 1;
+                            rotate: 0deg;                        
+                            transition: all 1s;
+                        }
+
+                        & span {
+                            text-align: center;
+                        }
+                    }
+                </style>
+                <span></span>
+            </div>
+            <button id="btnShowDate">
+                Show The Date
+                <script type="module">
+                    document.getElementById('btnShowDate').addEventListener('click', async function() {
+                        document.getElementById('showDate').classList.remove('loaded');
+                        document.querySelector('#showDate span').innerText = new Date().toLocaleString();
+                        
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        document.getElementById('showDate').classList.add('loaded');
+                    });
+                </script>
+            </button>
         </section>
-        <section>
-            <h2>
-                Pokemon List
-                <button id="btnReload">Reload</button>
+        <section style="grid-area: right">
+            <h2 id="pokemon-list-header">
+                <style>
+                    #pokemon-list-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                </style>
+                <span>Pokemon List</span>
+                <button id="btnReload">
+                    Reload    
+                    <script type="module">
+                        document.getElementById('btnReload').addEventListener('click', function() {
+                            document.querySelector('pokemon-list').load();
+                        });
+                    </script>
+                </button>
             </h2>
             <pokemon-list></pokemon-list>
         </section>
     </main>
-    <footer>
+    <footer style="grid-area: footer;">
+        <style>
+            body footer {
+                text-align: center;
+                padding: var(--medium-padding); 
+            }
+        </style>
         <hr>
         <p>&copy; 2024 Michael Lambert</p>
     </footer>
